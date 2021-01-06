@@ -8,12 +8,20 @@
     </head>
     <body>
         <h1>Index</h1>
-        <p>Blade/Index</p>
-        <p>{{$msg}}</p>
-        <form action="/hello" method = "POST">
-            @csrf
-            <input type="text" name="msg">
-            <input type="submit">
-        </form>
+        <p>ディレクティブ紹介</p>
+        <ol>
+            @foreach($items as $item)
+                @if($loop->first)
+                    <p>繰り返しデータ一覧</p>
+                    <ul> 
+                @endif
+                    <li>繰り返し：{{$loop->iteration}}回目  No.{{$item}}
+                @if($loop->last)
+                    </ul>
+                    <p>繰り返し終了</p>
+                @endif
+            @endforeach
+        </ol>
+
     </body>
 </html>
