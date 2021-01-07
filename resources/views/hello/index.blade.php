@@ -9,50 +9,20 @@
 @endsection
 
 @section('content')
-    <p>{{$msg}}</p>
-    @if(count($errors)> 0)
-        <p>下記エラーが発生しています</p>
-    @endif
-    <form action="/hello" method="post">
-        @csrf
-        <table>
-            @error('name')
-                <tr>
-                    <th>ERROR</th>
-                    <td>{{$message}}</td>
-                </tr>
-            @enderror
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Mail</th>
+            <th>Age</th>
+        </tr>
+        @foreach($items as $item)
             <tr>
-                <th>name: </th>
-                <td><input type="text" name="name" value={{old('name')}}></td>
+                <td>{{$item->name}}</td>
+                <td>{{$item->mail}}</td>
+                <td>{{$item->age}}</td>
             </tr>
-            @error('mail')
-                <tr>
-                    <th>ERROR</th>
-                    <td>{{$message}}</td>
-                </tr>
-            @endif
-            <tr>
-                <th>mail: </th>
-                <td><input type="text" name="mail" value={{old('mail')}}></td>
-            </tr>
-            @error('age')
-                <tr>
-                    <th>ERROR</th>
-                    <td>{{$message}}</td>
-                </tr>
-            @endif
-            <tr>
-                <th>age: </th>
-                <td><input type="text" name="age" value={{old('age')}}></td>
-            </tr>
-            <tr>
-                <th></th>
-                <td><input type="submit" value="送信"></td>
-            </tr>
-        </table>
-    </form>
-
+        @endforeach
+    </table>
 @endsection
 
 @section('footer')
