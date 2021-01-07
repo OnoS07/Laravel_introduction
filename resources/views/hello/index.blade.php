@@ -10,10 +10,8 @@
 
 @section('content')
     <p>本文のコンテンツ</p>
-    <p>必要なことをここに書いて、section →　yieldで表示させている</p>
-    <ul>
-        @each('components.item', $data, 'item')
-    </ul>
+    <p><middleware>yahoo.com</middleware></p>
+    <p><middleware>yahoo.com</middleware></p>
 @endsection
 
 @section('footer')
