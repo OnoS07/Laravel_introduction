@@ -11,8 +11,15 @@ use App\Http\Requests\HelloRequest;
 class HelloController extends Controller
 {
     public function index(Request $request){
-        $items = DB::select('SELECT * FROM people');
+        $items = DB::table('people')->orderBy('id', 'asc')->get();
         return view('hello.index', ['items' => $items]);
+    }
+
+    public function show(Request $request){
+        $id = $request->id;
+        $items = DB::table('people')->where('id', '<=', $id)->get();
+
+        return view('hello.show', ['items' => $items]);
     }
 
     public function post(Request $request){
@@ -31,17 +38,14 @@ class HelloController extends Controller
             'age' => $request->age,
         ];
 
-        DB::insert('INSERT INTO people (name, mail, age) VALUES(:name, :mail, :age)', $params);
+        DB::table('people')->insert($params);
         return redirect('/hello');
     }
 
      public function edit(Request $request){
-         $params = [
-             'id' => $request->id
-         ];
-         $item = DB::SELECT('SELECT * FROM people WHERE id = :id', $params);
+         $item = DB::table('people')->where('id', $request->id)->first();
 
-         return view('hello.edit', ['form' => $item[0]]);
+         return view('hello.edit', ['form' => $item]);
      }
 
      public function update(Request $request){
@@ -52,20 +56,18 @@ class HelloController extends Controller
             'age' => $request->age,
         ];
 
-        DB::UPDATE('UPDATE people SET name = :name, mail = :mail, age = :age WHERE id = :id', $params);
+        DB::table('people')->where('id', $request->id)->update($params);
         return redirect('/hello');
      }
 
      public function del(Request $request){
-        $params = ['id' => $request -> id ];
-        $item = DB::SELECT('SELECT * FROM people WHERE id = :id', $params);
+        $item = DB::table('people')->where('id', $request->id)->first();
 
-        return view('hello.del', ['form' => $item[0]]);
+        return view('hello.del', ['form' => $item]);
      }
 
      public function remove(Request $request){
-         $params = ['id' => $request -> id];
-         DB::DELETE('DELETE FROM people WHERE id = :id', $params);
+         DB::table('people')->where('id', $request->id)->delete();
 
          return redirect('/hello');
      }
