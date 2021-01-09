@@ -5,14 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\HelloRequest;
+use App\Models\Person;
 
 
 class HelloController extends Controller
 {
+    public function getAuth(Request $request){
+        $message = ['message' => 'ログインしてください'];
+        return view('hello.auth', $message);
+    }
+
+    public function postAuth(Request $request){
+        $email = $request->email;
+        $password = $request->password;
+        if(Auth::attempt(['email' => $email, 'password' => $password])){
+            $msg = 'ログインしました';
+        }else{
+            $msg = 'ログインに失敗しました';
+        }
+        return view('hello.auth', ['message'=>$msg]);
+    }
+
     public function index(Request $request){
-        $items = DB::table('people')->orderBy('id', 'asc')->get();
-        return view('hello.index', ['items' => $items]);
+        $user = Auth::user();
+
+        $items = Person::all();
+        return view('hello.index', ['items' => $items, 'user'=>$user]);
     }
 
     public function show(Request $request){
